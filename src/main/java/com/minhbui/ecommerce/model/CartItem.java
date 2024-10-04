@@ -24,4 +24,12 @@ public class CartItem {
 
     Long totalPrice;
     Integer quantity;
+
+    public CartItem(Cart cart, ProductSkus productSkus, int i, int i1) {
+        this.cart = cart;
+        this.productSku = productSkus;
+        this.quantity = i;
+        this.totalPrice = productSkus.getPrice() * i;
+    }
+
 }

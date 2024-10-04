@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class EventService {
      ShopRepository shopRepository;
      UserRepository userRepository;
 
-
+    @PreAuthorize("hasRole('SHOP')")
     public EventResponse createEvent(EventCreationRequest request) {
         //lấy email người dùng
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -57,6 +58,8 @@ public class EventService {
         eventResponse.setDisabled(false);
         return eventResponse;
     }
+    //method for shop
+    @PreAuthorize("hasRole('SHOP')")
     public List<EventResponse> getAll() {
         //lấy email người dùng
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -75,7 +78,8 @@ public class EventService {
         return eventMapper.toEventResponseList(shop.getEvents());
     }
 
-    //lấy tất cả event của shop còn hiệu lực
+    //lấy tất cả event của shop còn hiệu lực method for user
+    @PreAuthorize("hasRole('USER')")
     public List<EventResponse> getEventsByShop(Long shopId) {
         Shop shop = shopRepository.findById(shopId).orElse(null);
         if (shop == null) {
@@ -90,6 +94,7 @@ public class EventService {
         return eventMapper.toEventResponse(event);
     }
 
+    @PreAuthorize("hasRole('SHOP')")
     public EventResponse updateEvent(Long id, EventUpdateRequest request) {
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
         User owner = userRepository.findByEmail(emailOwner).orElse(null);
@@ -109,6 +114,7 @@ public class EventService {
         return eventMapper.toEventResponse(eventRepository.save(event));
     }
 
+    @PreAuthorize("hasRole('SHOP')")
     public void deleteById(Long id) {
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
         User owner = userRepository.findByEmail(emailOwner).orElse(null);

@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ public class CategoryService {
      UserRepository userRepository;
      ShopRepository shopRepository;
 
+    @PreAuthorize("hasRole('SHOP')")
     public CategoryResponse createCategory(CategoryCreationRequest request) {
         //lấy email người dùng
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -59,6 +61,7 @@ public class CategoryService {
     }
 
     //method for shopOwner
+    @PreAuthorize("hasRole('SHOP')")
     public List<CategoryResponse> getAllCategoriesOfShop() {
 
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -79,6 +82,7 @@ public class CategoryService {
     }
 
     //method for user
+    @PreAuthorize("hasRole('USER')")
     public List<CategoryResponse> getAllCategoriesOfShopWithShopId(Long shopId) {
 
         Shop shop = shopRepository.findById(shopId).orElse(null);
@@ -90,6 +94,7 @@ public class CategoryService {
         return categoryMapper.toCategoryResponseList(categoryRepository.findAllCateOfShopDisabled(shop));
     }
 
+    @PreAuthorize("hasRole('USER')")
     public CategoryResponse getCategoryById(Long id) {
 
         Category category = categoryRepository.findById(id).orElse(null);
@@ -102,6 +107,7 @@ public class CategoryService {
     }
 
 
+    @PreAuthorize("hasRole('SHOP')")
     public CategoryResponse updateCategory(CategoryUpdateRequest request, Long id) {
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -124,6 +130,7 @@ public class CategoryService {
 
         return categoryMapper.toCateResponse(categoryRepository.save(category));
     }
+    @PreAuthorize("hasRole('SHOP')")
     public void deleteCategoryById(Long id) {
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
 

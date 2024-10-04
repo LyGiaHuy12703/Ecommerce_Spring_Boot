@@ -11,6 +11,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ErrorCode {
+    ORDER_NOT_FOUND(1020,"order not found"),
+    ORDER_STATUS_INVALID(1019, "order status invalid"),
+    CART_EMPTY(1018,"CART_EMPTY"),
+    PRODUCT_ATTRIBUTE_NOT_FOUND(1017,"product attribute not found"),
+    ITEM_NOT_FOUND_IN_CART(1016, "Không tìm thấy sản phẩm trong giỏ hàng"),
+    INSUFFICIENT_QUANTITY(1015, "Không đủ số lượng"),
+    CART_NOT_FOUND(1014, "Cart not found"),
     ADDRESS_NOT_FOUND(1013,"Address Not Found"),
     PRODUCT_DISABLE(1012, "Product disabled"),
     CATEGORY_DISABLE(1011,"Category disabled"),

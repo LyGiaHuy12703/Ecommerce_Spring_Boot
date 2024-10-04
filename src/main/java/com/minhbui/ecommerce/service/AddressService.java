@@ -13,6 +13,7 @@ import com.minhbui.ecommerce.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +24,10 @@ import java.util.List;
 @Service
 public class AddressService {
     AddressRepository addressRepository;
-    private final UserRepository userRepository;
-    private final AddressMapper addressMapper;
+    UserRepository userRepository;
+    AddressMapper addressMapper;
 
+    @PreAuthorize("hasRole('USER')")
     public AddressResponse createAddress(AddressCreationRequest request) {
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -39,15 +41,18 @@ public class AddressService {
         return  addressMapper.toAddressResponse(addressRepository.save(address));
     }
 
+    @PreAuthorize("hasRole('USER')")
     public List<AddressResponse> getAll() {
         return addressMapper.toAddressResponses(addressRepository.findAll());
     }
 
+    @PreAuthorize("hasRole('USER')")
     public AddressResponse getAddressById(Long id) {
 
         return addressMapper.toAddressResponse(addressRepository.findById(id).get());
     }
 
+    @PreAuthorize("hasRole('USER')")
     public AddressResponse updateAddress(Long id, AddressUpdateRequest request) {
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
         User owner = userRepository.findByEmail(emailOwner)
@@ -63,6 +68,7 @@ public class AddressService {
         addressMapper.updateAddress(address, request);
         return addressMapper.toAddressResponse(addressRepository.save(address));
     }
+    @PreAuthorize("hasRole('USER')")
     public void deleteAddress(Long id) {
         String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
         User owner = userRepository.findByEmail(emailOwner)
