@@ -5,7 +5,6 @@ import com.minhbui.ecommerce.dto.request.AddressUpdateRequest;
 import com.minhbui.ecommerce.dto.request.ApiResponse;
 import com.minhbui.ecommerce.dto.response.AddressResponse;
 import com.minhbui.ecommerce.service.AddressService;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

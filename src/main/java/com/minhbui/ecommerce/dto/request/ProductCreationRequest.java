@@ -24,7 +24,6 @@ public class ProductCreationRequest {
     Integer minPrice;
     Integer maxPrice;
     Long shopId;
-    Long eventId;
     Long categoryId;
 
 }
