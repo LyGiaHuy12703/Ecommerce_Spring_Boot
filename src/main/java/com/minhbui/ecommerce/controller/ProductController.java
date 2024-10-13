@@ -1,5 +1,7 @@
 package com.minhbui.ecommerce.controller;
 
+import com.minhbui.ecommerce.dto.product.ProductSkusAndAttributeRequest;
+import com.minhbui.ecommerce.dto.product.SkusAndAttributeResponse;
 import com.minhbui.ecommerce.dto.request.*;
 import com.minhbui.ecommerce.dto.response.ProductAttributesResponse;
 import com.minhbui.ecommerce.dto.response.ProductDetailResponse;
@@ -23,6 +25,14 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    //tạo productSKus và attribute
+    @PostMapping("/shop/addSkusAndAttribute")
+    ApiResponse<SkusAndAttributeResponse> createSkusAndAttribute(@RequestBody ProductSkusAndAttributeRequest request){
+        ApiResponse<SkusAndAttributeResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setData(productService.createSkusAndAttribute(request));
+        return apiResponse;
+    }
 
     //tạo sản phẩm
     @PostMapping("/shop/products")

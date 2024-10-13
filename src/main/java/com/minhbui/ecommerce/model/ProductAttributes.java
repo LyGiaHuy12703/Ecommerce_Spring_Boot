@@ -1,5 +1,6 @@
 package com.minhbui.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class ProductAttributes {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_sku")
+    @JsonBackReference
     ProductSkus productSku;
 
 }

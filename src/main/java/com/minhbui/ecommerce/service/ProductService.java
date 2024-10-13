@@ -2,6 +2,8 @@ package com.minhbui.ecommerce.service;
 
 import com.cloudinary.utils.ObjectUtils;
 import com.minhbui.ecommerce.config.CloudinaryConfig;
+import com.minhbui.ecommerce.dto.product.ProductSkusAndAttributeRequest;
+import com.minhbui.ecommerce.dto.product.SkusAndAttributeResponse;
 import com.minhbui.ecommerce.dto.request.*;
 import com.minhbui.ecommerce.dto.response.ProductAttributesResponse;
 import com.minhbui.ecommerce.dto.response.ProductDetailResponse;
@@ -53,6 +55,63 @@ public class ProductService {
     ProductAttributesRepository productAttributesRepository;
     UserService userService;
     CloudinaryConfig cloudinary;
+
+    @PreAuthorize("hasRole('SHOP')")
+    public SkusAndAttributeResponse createSkusAndAttribute(ProductSkusAndAttributeRequest request){
+        String emailOwner = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User owner = userRepository.findByEmail(emailOwner)
+                .orElseThrow(() ->new AppCatchException(ErrorCode.USER_NOT_FOUND));
+
+        Shop shop = shopRepository.findByOwner(owner)
+                .orElseThrow(() ->new AppCatchException(ErrorCode.SHOP_NOT_FOUND));
+
+        Product product = productRepository.findById(request.getProductId())
+                .orElseThrow(() ->new AppCatchException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        ProductSkus productSkus = ProductSkus.builder()
+                .createdAt(new Date())
+                .product(product)
+                .price(request.getPrice())
+                .stockQuantity(request.getStockQuantity())
+                .build();
+        productSkusRepository.save(productSkus);
+
+
+        ProductAttributes productAttributes = new ProductAttributes();
+
+        if(shop.getProducts().contains(product)){
+            Boolean isType = productAttributesRepository.existsByType(request.getType());
+            Boolean isValue = productAttributesRepository.existsByValue(request.getValue());
+            log.info("code ddeens day");
+            if(isType && isValue){
+                log.info("code ddeens day2");
+                Set<ProductAttributes> productAttribute = productAttributesRepository.findProductAttributesByTypeAndValue(request.getType(), request.getValue());
+                productSkus.setProductAttributes(productAttribute);
+                productSkusRepository.save(productSkus);
+
+            }else{
+                log.info("code ddeens day3");
+                productAttributes.setCreatedAt(new Date());
+                productAttributes.setType(request.getType());
+                productAttributes.setValue(request.getValue());
+                log.error("error: ", productAttributes);
+                productAttributes.setProductSku(productSkus);
+
+                try {
+                    productAttributesRepository.save(productAttributes);
+                } catch (Exception e) {
+                    log.error("Error saving productAttributes: ", e);
+                    throw new AppCatchException(ErrorCode.ADDRESS_NOT_FOUND );
+                }
+            }
+        }else{
+            throw new AppCatchException(ErrorCode.YOU_ARE_NOT_OWNER);
+        }
+        return SkusAndAttributeResponse.builder()
+              .product(product)
+                .build();
+    }
 
     //product
     @PreAuthorize("hasRole('SHOP')")

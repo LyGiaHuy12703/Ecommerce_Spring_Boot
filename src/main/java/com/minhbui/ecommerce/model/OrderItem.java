@@ -1,5 +1,6 @@
 package com.minhbui.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_skus")
+    @JsonBackReference
     ProductSkus productSku;
 
     Long totalPrice;

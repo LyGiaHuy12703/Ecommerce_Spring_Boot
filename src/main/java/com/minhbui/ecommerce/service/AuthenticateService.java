@@ -78,16 +78,16 @@ public class AuthenticateService {
         User user = userMapper.toUser(signUpRequest);
         user.setRoles(new HashSet<>());
 
-        Role foundRole = roleRepository.findByRoleName(RoleEnum.ROLE_SHOP).orElse(null);
-        if(foundRole != null) {
-            user.addRole(foundRole);
-        }else {
-            user.addRole(Role.builder()
-                    .name(RoleEnum.ROLE_USER)
-                    .users(new HashSet<>())
-                    .build());
-        }
-
+//        Role foundRole = roleRepository.findByRoleName(RoleEnum.ROLE_SHOP).orElse(null);
+//        if(foundRole != null) {
+//            user.addRole(foundRole);
+//        }else {
+//
+//        }
+        user.addRole(Role.builder()
+                .name(RoleEnum.ROLE_USER)
+                .users(new HashSet<>())
+                .build());
 
         user.setPassword(passwordEncoded);
         user.setVerificationCode(verifyCode);
@@ -212,6 +212,7 @@ public class AuthenticateService {
         authResponse.setRole(authUtil.builderRole(user));
         return authResponse;
     }
+
 
     public TokenResponse refreshToken(RefreshTokenRequest request) throws ParseException, JOSEException {
         String token = request.refresh_token();

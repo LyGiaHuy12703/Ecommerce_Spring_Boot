@@ -1,6 +1,7 @@
 package com.minhbui.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,11 +30,14 @@ public class ProductSkus {
     Product product;
 
     @OneToMany(mappedBy = "productSku",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     Set<ProductAttributes> productAttributes = new HashSet<>();
 
     @OneToMany(mappedBy = "productSku",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     Set<CartItem> cartItems = new HashSet<>();
 
     @OneToMany(mappedBy = "productSku",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     Set<OrderItem> orderItems = new HashSet<>();
 }
