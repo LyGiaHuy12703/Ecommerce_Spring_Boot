@@ -1,10 +1,7 @@
 package com.minhbui.ecommerce.dto.response;
 
 import com.fasterxml.jackson.annotation.*;
-import com.minhbui.ecommerce.model.Category;
-import com.minhbui.ecommerce.model.Event;
-import com.minhbui.ecommerce.model.ProductDetail;
-import com.minhbui.ecommerce.model.Shop;
+import com.minhbui.ecommerce.model.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -29,5 +26,6 @@ public class ProductResponse {
     Category category;
     Set<String> images;
     Set<ProductDetail> productDetail;
+    Set<ProductSkus> productSkus;
     Event event;
 }

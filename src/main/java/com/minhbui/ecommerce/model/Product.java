@@ -43,7 +43,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
-    Set<ProductDetail> productSkus = new HashSet<>();
+    Set<ProductSkus> productSkus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

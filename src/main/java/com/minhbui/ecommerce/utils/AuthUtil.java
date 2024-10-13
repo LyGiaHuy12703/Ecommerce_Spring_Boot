@@ -11,6 +11,7 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.StringJoiner;
 
+@Slf4j
 @Service
 public class AuthUtil {
     public String generateToken(
@@ -55,6 +57,7 @@ public class AuthUtil {
         StringJoiner roleStr = new StringJoiner(" ");
         Set<Role> roles = user.getRoles();
         for (Role role : roles) {
+
             roleStr.add(role.getName().toString());
         }
         return roleStr.toString();

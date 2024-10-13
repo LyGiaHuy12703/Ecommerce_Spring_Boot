@@ -37,9 +37,8 @@ public class SecurityConfig {
     private final String[] publicApi = {
             "/auth/signin",
             "/auth/signup",
-            "/auth/refresh-token",
+            "/auth/refreshToken",
             "/auth/verify",
-            "/auth/resend"
     };
 
     @Bean

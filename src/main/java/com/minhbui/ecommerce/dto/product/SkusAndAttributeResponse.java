@@ -1,19 +1,16 @@
-package com.minhbui.ecommerce.dto.request;
+package com.minhbui.ecommerce.dto.product;
 
 import com.minhbui.ecommerce.model.Product;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import com.minhbui.ecommerce.model.ProductAttributes;
+import com.minhbui.ecommerce.model.ProductSkus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class CategoryCreationRequest {
-    String name;
-    String description;
-
+public class SkusAndAttributeResponse {
+    Product product;
 }
